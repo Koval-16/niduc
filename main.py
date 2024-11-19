@@ -1,32 +1,45 @@
-from car import Car
+import voting_algorithm
+import error
 
 def main():
-    initial_speed = 50.0
-    car = Car(initial_speed)
-
-    num_iterations = 5
-
-    # Symulacja
-    for iteration in range(num_iterations):
-        # Zmieniamy prędkość auta w każdej iteracji (prędkość stopniowo maleje o 1 km/h)
-        new_speed = initial_speed - iteration
-        car.update_speed(new_speed)
-
-        # Aktualizujemy zmierzone wartości prędkości we wszystkich kołach
-        car.update_measured_values()
-
-        print(f"\n--- Iteracja {iteration + 1} ---")
-        print(f"Prędkość auta: {new_speed:.2f} km/h")
-
-        # Pobieramy odczyty z każdego koła
-        wheel_values = car.get_wheel_values()
-
-        for wheel_label, data in wheel_values.items():
-            # Wyświetlamy wartości zmierzone przez czujniki i obliczoną prędkość koła po głosowaniu
-            sensor_values = data['sensor_values']
-            measured_value = data['measured_value']
-            print(f"{wheel_label} wheel sensor values: {sensor_values}")
-            print(f"{wheel_label} wheel measured value : {measured_value:.2f} km/h")
+    alg = voting_algorithm.VotingAlgorithm()
+    err = error.Error()
+    #
+    print(f"Wynik majority: {alg.majority_algorithm_tolerance([1.2,1.5,1.8],0.5)}")
+    print(f"Wynik majority: {alg.majority_algorithm_tolerance([3.2,3.8,2],0.5)}")
+    print(f"Wynik majority: {alg.majority_algorithm_tolerance([5.1,5.3,4.8],0.5)}")
+    print("-----")
+    print(f"Wynik plurality: {alg.plurality_with_tolerance([1.2,1.5,1.8],0.5)}")
+    print(f"Wynik plurality: {alg.plurality_with_tolerance([3.2,3.8,2],0.5)}")
+    print(f"Wynik plurality: {alg.plurality_with_tolerance([5.1,5.3,4.8],0.5)}")
+    print("-----")
+    print(f"Wynik mediana: {alg.median_algorithm([4.2,5,3.6])}")
+    print(f"Wynik mediana: {alg.median_algorithm([4.2,5,3.6])}")
+    print(f"Wynik mediana: {alg.median_algorithm([7.1,8,7.3])}")
+    print("-----")
+    print(f"Wynik weighted average: {alg.wages_algorithm([(2.5,1),(2.1,1),(3.9,1)])}")
+    print(f"Wynik weighted average: {alg.wages_algorithm([(5.1, 1), (5.3, 1), (4.8, 1)])}")
+    print(f"Wynik weighted average: {alg.wages_algorithm([(7.1, 1), (7.3, 1), (8, 1)])}")
+    print("-----")
+    print(f"Wynik linear predict: {alg.linear_predictor_algorithm([3.2,3.8,2],[1.5,2.5],4)}")
+    print(f"Wynik linear predict: {alg.linear_predictor_algorithm([4.2,5,3.6],[1.5,2.5,3.2],4)}")
+    print(f"Wynik linear predict: {alg.linear_predictor_algorithm([5.1,5.3,4.8],[1.5,2.5,3.2,4.2],4)}")
+    print("-----")
+    print(f"Wynik firstorder: {alg.firstorder_predictor_algorithm([4.2,5,3.6],[1.5,2.5,3.2],4)}")
+    print(f"Wynik firstorder: {alg.firstorder_predictor_algorithm([5.1,5.3,4.8],[1.5,2.5,3.2,3.6],4)}")
+    print(f"Wynik firstorder: {alg.firstorder_predictor_algorithm([5.6,6.3,6.4],[1.5,2.5,3.2,3.6,5.1],4)}")
+    print("-----")
+    print(f"Wynik M-out-of-N: {alg.M_out_of_N_algorithm([1.1,1.3,1.3,1.1,1.5],[1,1,1,1,1],0.2,1,3,0)}")
+    print(f"Wynik M-out-of-N: {alg.M_out_of_N_algorithm([2.7,2.8,3.1,8.9,3.5],[1,1,1,1,1],0.2,1,3,2.2)}")
+    print(f"Wynik M-out-of-N: {alg.M_out_of_N_algorithm([6.5,7.2,6.5,7.2,7.8],[1,1,1,1,1],0.2,1,3,6)}")
+    print("-----")
+    print(f"Smoothing: {alg.smoothing_algorithm([2.5,2.1,3.9],1.5,3)}")
+    print(f"Smoothing: {alg.smoothing_algorithm([4.2,5,3.6],3.2,3)}")
+    print(f"Smoothing: {alg.smoothing_algorithm([8,7.3,7.1],6.3,3)}")
+    print("-----")
+    print(err.random_error(2,1))
+    print(err.systematic_error(2,0.21))
+    print(err.failure_error(2))
 
 if __name__ == "__main__":
     main()
