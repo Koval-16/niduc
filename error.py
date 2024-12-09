@@ -11,7 +11,7 @@ class Error:
     def random_error(self, value, diff):
         bottom = value-diff
         top = value+diff
-        return random.uniform(bottom,top)
+        return abs(random.uniform(bottom,top))
 
     def systematic_error(self,value,diff):
         return value+diff
